@@ -1,0 +1,14 @@
+rate(hello_world_latency_seconds_count[1m])
+would return the per-second rate of Hello World requests
+
+hello_world_latency_seconds_sum is the sum of the values passed to observe,
+rate(hello_world_latency_seconds_sum[1m]) is the amount of time spent responding to requests per second.
+
+If you divide these two expressions you get the average latency over the last minute.
+rate(hello_world_latency_seconds_sum[1m])/rate(hello_world_latency_seconds_count[1m])
+
+Let’s take an example. Say you had in the last minute you had three requests that took 2, 4 and 9 seconds. The count would be 3 and the sum would be 15 seconds, so the average latency is 5 seconds. rate is per second rather than per minute so you in principle need to divide both sides by 60, but that cancels out.
+
+
+histogram_quantile(0.95, rate(hello_world_latency_seconds_bucket[1m]))
+
